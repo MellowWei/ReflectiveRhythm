@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reflective Rhythm — AI-scaffolded reflection in adult attention regulation · Wei Jueran (Mellow Wei) · Penn GSE</title>
+<meta name="description" content="Reflective Rhythm is a design-based research project investigating whether AI-scaffolded micro-reflection can support adults in regulating attention during self-directed learning. A research prototype developed at Penn GSE by Wei Jueran (Mellow Wei), MSEd Learning Sciences and Technology." />
+<link rel="canonical" href="https://mellowwei.github.io/LSR/" />
+<meta name="author" content="Wei Jueran (Mellow Wei)" />
+<meta name="keywords" content="design-based research, learning sciences, AI in education, learning analytics, adult learning, attention regulation, reflective practice, self-directed learning, AI scaffolding, Penn GSE" />
+<meta name="robots" content="index, follow" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Reflective Rhythm — AI-scaffolded reflection in adult attention regulation" />
+<meta property="og:description" content="A design-based research project at Penn GSE investigating AI-scaffolded micro-reflection for adult learners. Wei Jueran (Mellow Wei), MSEd LS&T." />
+<meta property="og:url" content="https://mellowwei.github.io/LSR/" />
+<meta property="og:locale" content="en_US" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #fafaf7;
+  --bg-alt: #f4f3ee;
+  --ink: #0e0e10;
+  --ink-soft: #2a2a2e;
+  --muted: #6b6b66;
+  --hairline: #d4d4cf;
+  --accent: #1e3a8a;
+  --accent-soft: #4f5fa8;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans: "Manrope", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --measure: 68ch;
+  --pad: clamp(20px, 4vw, 48px);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.65;
+  font-feature-settings: "kern", "liga", "calt";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* TOP META BAR */
+.meta-bar {
+  padding: 18px var(--pad);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--hairline);
+  flex-wrap: wrap;
+}
+.meta-bar .meta-left { color: var(--ink); }
+.meta-bar a { color: var(--muted); text-decoration: none; margin-left: 18px; }
+.meta-bar a:hover { color: var(--accent); }
+
+/* HERO */
+.hero {
+  padding: clamp(64px, 12vh, 120px) var(--pad) clamp(48px, 8vh, 88px);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.hero .eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 28px;
+}
+h1.title {
+  font-family: var(--serif);
+  font-size: clamp(44px, 7vw, 88px);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin: 0 0 24px;
+  color: var(--ink);
+}
+h1.title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+}
+.hero .lede {
+  font-family: var(--serif);
+  font-size: clamp(20px, 2.4vw, 26px);
+  line-height: 1.4;
+  font-weight: 300;
+  color: var(--ink-soft);
+  max-width: 56ch;
+  margin: 0 0 36px;
+  font-style: italic;
+}
+.hero .terms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 36px 0 0;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+.hero .terms .term {
+  flex: 1;
+  min-width: 200px;
+  padding: 18px 20px 18px 0;
+  border-right: 1px solid var(--hairline);
+}
+.hero .terms .term:last-child { border-right: none; padding-right: 0; }
+.hero .terms .term-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.hero .terms .term-value {
+  font-family: var(--serif);
+  font-size: 19px;
+  color: var(--ink);
+}
+
+/* SECTIONS */
+section {
+  padding: clamp(56px, 8vw, 96px) var(--pad);
+  max-width: 1000px;
+  margin: 0 auto;
+  border-top: 1px solid var(--hairline);
+  position: relative;
+}
+.section-head {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  margin-bottom: 36px;
+  align-items: baseline;
+}
+.section-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  padding-top: 8px;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  font-weight: 400;
+  margin: 0;
+  color: var(--ink);
+}
+.section-body {
+  margin-left: 0;
+  max-width: var(--measure);
+}
+@media (min-width: 820px) {
+  .section-body { margin-left: 104px; }
+}
+.section-body p {
+  margin: 0 0 18px;
+  color: var(--ink-soft);
+}
+.section-body p:last-child { margin-bottom: 0; }
+.section-body strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.section-body em.term {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* PULL QUOTE */
+.pull {
+  font-family: var(--serif);
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.3;
+  font-style: italic;
+  color: var(--ink);
+  padding: 24px 0 24px 28px;
+  margin: 28px 0;
+  border-left: 2px solid var(--accent);
+  max-width: var(--measure);
+}
+.pull cite {
+  display: block;
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+/* PAINS LIST */
+ol.pains {
+  counter-reset: pain;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-width: var(--measure);
+}
+ol.pains li {
+  counter-increment: pain;
+  padding: 18px 0 18px 60px;
+  border-top: 1px solid var(--hairline);
+  position: relative;
+}
+ol.pains li:last-child { border-bottom: 1px solid var(--hairline); }
+ol.pains li::before {
+  content: counter(pain, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 18px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+ol.pains li h4 {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+ol.pains li p {
+  font-size: 15px;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* DBR DIAGRAM */
+.dbr-cycle {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 0;
+  margin: 28px 0;
+  max-width: var(--measure);
+  flex-wrap: wrap;
+}
+.dbr-cycle .phase {
+  flex: 1;
+  min-width: 90px;
+  padding: 16px 12px;
+  text-align: center;
+  border: 1px solid var(--hairline);
+  border-right: none;
+  position: relative;
+}
+.dbr-cycle .phase:last-child { border-right: 1px solid var(--hairline); }
+.dbr-cycle .phase .ph-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.dbr-cycle .phase .ph-name {
+  font-family: var(--serif);
+  font-size: 15px;
+  color: var(--ink);
+}
+
+/* TABLES */
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 28px 0;
+  font-size: 15px;
+  max-width: var(--measure);
+}
+.spec-table th, .spec-table td {
+  padding: 12px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid var(--hairline);
+}
+.spec-table th {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.spec-table td:first-child {
+  font-family: var(--mono);
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  width: 22%;
+  white-space: nowrap;
+  padding-top: 14px;
+}
+.spec-table td strong { color: var(--ink); font-weight: 600; }
+.spec-table tr:last-child td { border-bottom: 1px solid var(--hairline); }
+
+/* TIMELINE */
+.timeline {
+  margin: 28px 0;
+  max-width: var(--measure);
+  border-top: 1px solid var(--hairline);
+}
+.timeline-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.timeline-when {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  padding-top: 2px;
+}
+.timeline-what {
+  font-family: var(--serif);
+  font-size: 17px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.timeline-what small {
+  display: block;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+  font-style: normal;
+}
+
+/* LINKS */
+a.inline {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-soft);
+  padding-bottom: 1px;
+  transition: border-bottom-color 0.2s;
+}
+a.inline:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* FOOTER */
+footer {
+  margin-top: 80px;
+  padding: 40px var(--pad) 60px;
+  background: var(--bg-alt);
+  border-top: 1px solid var(--hairline);
+}
+footer .footer-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 32px;
+}
+footer h5 {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 12px;
+  font-weight: 500;
+}
+footer p, footer a {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0 0 6px;
+  text-decoration: none;
+}
+footer a { display: block; }
+footer a:hover { color: var(--accent); }
+footer .signature {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ABOUT CARD */
+.about-card {
+  margin: 28px 0 0;
+  padding: 28px;
+  background: var(--bg-alt);
+  border: 1px solid var(--hairline);
+  max-width: var(--measure);
+}
+.about-card h4 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+.about-card .role {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.about-card p { font-size: 15px; margin: 0 0 10px; }
+.about-card .contact {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+.about-card .contact a { color: var(--accent); text-decoration: none; }
+.about-card .contact a:hover { border-bottom: 1px solid var(--accent); }
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  .section-head { grid-template-columns: 60px 1fr; gap: 16px; margin-bottom: 24px; }
+  .section-num { font-size: 11px; }
+  .hero .terms .term { flex: 1 0 50%; border-right: none; border-bottom: 1px solid var(--hairline); padding-right: 16px; }
+  .hero .terms .term:last-child { border-bottom: none; }
+  .timeline-row { grid-template-columns: 1fr; gap: 4px; }
+  .dbr-cycle .phase { min-width: 70px; padding: 12px 6px; }
+  .dbr-cycle .phase .ph-name { font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero, section { animation: fadeUp 0.7s ease-out both; }
+  section { animation-delay: 0.1s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="meta-bar">
+  <div class="meta-left">REFLECTIVE RHYTHM · LSR / 2026</div>
+  <nav>
+    <a href="#problem">Problem</a>
+    <a href="#method">Method</a>
+    <a href="#pilot">Pilot</a>
+    <a href="#publications">Output</a>
+    <a href="#about">Contact</a>
+  </nav>
+</div>
+
+<header class="hero">
+  <div class="eyebrow">Design-Based Research · Penn GSE · 2026</div>
+  <h1 class="title">Reflective <em>Rhythm</em>.</h1>
+  <p class="lede">A study of AI-scaffolded reflection in adult attention regulation during self-directed learning.</p>
+
+  <div class="terms">
+    <div class="term">
+      <div class="term-label">Domain</div>
+      <div class="term-value">Learning Sciences × HCI</div>
+    </div>
+    <div class="term">
+      <div class="term-label">Method</div>
+      <div class="term-value">Design-Based Research</div>
+    </div>
+    <div class="term">
+      <div class="term-label">Stage</div>
+      <div class="term-value">Pre-IRB feasibility pilot</div>
+    </div>
+  </div>
+</header>
+
+<section id="problem">
+  <div class="section-head">
+    <div class="section-num">01 · Problem</div>
+    <h2 class="section-title">When self-directed adult learners lose access to themselves before they lose productivity.</h2>
+  </div>
+  <div class="section-body">
+    <p>Most digital tools designed to support adult learners assume the user arrives ready: attentionally available, emotionally coherent, capable of articulating a goal. In reality, the harder moments of self-directed learning happen <em>before</em> coherence — when attention has fragmented, when emotional state is unreadable to the learner themselves, when a transition between modes has stalled. Productivity-framed tools demand exactly the readiness the learner has just lost.</p>
+
+    <p>This project asks a methodological question: can an AI-scaffolded reflective interface support learners in <strong>regulating attention before the productivity layer is invoked</strong>? Not as a clinical intervention, but as a learning-sciences-grounded design that treats subjective state as first-person data and reflection as a temporal pathway rather than a moment of insight.</p>
+
+    <div class="pull">
+      Adults do not first lose productivity. They first lose access to themselves.
+      <cite>Working hypothesis · Reflective Rhythm 2026</cite>
+    </div>
+  </div>
+</section>
+
+<section id="method">
+  <div class="section-head">
+    <div class="section-num">02 · Method</div>
+    <h2 class="section-title">Design-Based Research as the operating method.</h2>
+  </div>
+  <div class="section-body">
+    <p>The project follows a Design-Based Research cycle in the tradition of Brown (1992), Collins (1992), Cobb et al. (2003), and Sandoval (2014). Each iteration produces three intertwined outputs: a refined prototype, an empirical observation about how learners interact with it, and a theoretical refinement of the underlying claim.</p>
+
+    <div class="dbr-cycle">
+      <div class="phase"><div class="ph-num">01</div><div class="ph-name">Empathize</div></div>
+      <div class="phase"><div class="ph-num">02</div><div class="ph-name">Define</div></div>
+      <div class="phase"><div class="ph-num">03</div><div class="ph-name">HMW</div></div>
+      <div class="phase"><div class="ph-num">04</div><div class="ph-name">Prototype</div></div>
+      <div class="phase"><div class="ph-num">05</div><div class="ph-name">Test</div></div>
+    </div>
+
+    <p>The current iteration sits between Prototype and Test. A working software-only prototype exists; an informal N=5 self-and-friend feasibility pilot is in progress to calibrate the protocol before formal IRB submission and recruitment.</p>
+
+    <p>The data structure is designed for <em class="term">learning analytics</em> from the start: every session produces a CSV row with pre/post self-report on five subjective axes, behavioral attention measures (sustained-attention reaction time and accuracy), and a free-text reflective note. Each iteration adds a row; the schema does not change.</p>
+  </div>
+</section>
+
+<section id="pains">
+  <div class="section-head">
+    <div class="section-num">03 · Pains</div>
+    <h2 class="section-title">Five recurring breakdowns in adult self-directed learning.</h2>
+  </div>
+  <div class="section-body">
+    <p>The five pain points below were surfaced through informal interviews and self-observation during the Empathize phase. Each one is a moment where the learner's existing toolkit fails — not because the tool is poorly designed, but because it presumes a coherence the learner has just lost.</p>
+
+    <ol class="pains">
+      <li>
+        <h4>Fragmented attention in self-directed contexts</h4>
+        <p>The learner has time and intent, but cannot assemble the attentional state required to begin. Existing focus tools start the timer; they do not help cross the threshold.</p>
+      </li>
+      <li>
+        <h4>Emotional overload that reads as productivity failure</h4>
+        <p>What looks externally like procrastination is internally an unprocessed affective state. Productivity language re-encodes a regulation problem as a discipline problem.</p>
+      </li>
+      <li>
+        <h4>Mode transitions that stall mid-shift</h4>
+        <p>The learner can describe both the prior state and the desired state, but cannot enter the transition. The gap is temporal, not cognitive.</p>
+      </li>
+      <li>
+        <h4>Tools that demand coherence before they provide support</h4>
+        <p>Most reflective journaling, planning, and metacognitive tools require articulate self-report as the entry condition — exactly the capacity the learner has just lost.</p>
+      </li>
+      <li>
+        <h4>Absent metacognitive scaffolding in AI productivity tools</h4>
+        <p>Generative AI tools optimize for output. They do not offer structured scaffolding for the learner's reflective process around <em>whether</em> the output is the right artifact, or whether the underlying state is conducive to producing it.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="prototype">
+  <div class="section-head">
+    <div class="section-num">04 · Prototype</div>
+    <h2 class="section-title">What is currently built, and what is deferred.</h2>
+  </div>
+  <div class="section-body">
+    <p>The Reflective Rhythm prototype is a web-based, software-only system. It does not require specialized hardware, custom sensors, or installed clients. A learner opens the interface, completes a short pre-session self-report, runs through a structured reflective interaction with an AI scaffolding layer, and completes a post-session self-report and a brief behavioral attention task.</p>
+
+    <table class="spec-table">
+      <tr><th>Component</th><th>Description</th></tr>
+      <tr><td>Self-report</td><td><strong>5-axis subjective state instrument.</strong> Focus, emotional tone, body tension, inner noise, task readiness. Items are mappable to validated instruments (PANAS, BRIEF-A, PSS) for downstream convergence analysis.</td></tr>
+      <tr><td>AI scaffolding</td><td><strong>Structured reflective micro-dialogue.</strong> Two modes — stabilization and expansion — differentiated by reflective depth and prompt structure. Logged as a discrete condition variable.</td></tr>
+      <tr><td>Behavioral task</td><td><strong>Sustained-attention reaction time task.</strong> Standard PVT-style paradigm, no novel development required. Provides an objective convergence layer.</td></tr>
+      <tr><td>Data export</td><td><strong>CSV with pre/post deltas, AI mode, condition, behavioral measures, free-text reflective note.</strong> Designed for direct import into R, Python, or learning-analytics pipelines.</td></tr>
+      <tr><td>Deferred</td><td>Physiological sensing (HRV via consumer wearable) is optional in Phase 1 and not required for the methodological claim. Lab-grade instrumentation is deferred to a possible Phase 2.</td></tr>
+    </table>
+
+    <p>The broader product design case study — including the system architecture, intervention design history, and prototype stack — is documented separately at <a class="inline" href="https://mellowwei.github.io/BCI-HRP/">mellowwei.github.io/BCI-HRP</a>. The work above is the learning-sciences slice of that program.</p>
+  </div>
+</section>
+
+<section id="pilot">
+  <div class="section-head">
+    <div class="section-num">05 · Pilot</div>
+    <h2 class="section-title">A four-condition design ready to run.</h2>
+  </div>
+  <div class="section-body">
+    <p>The pilot tests a single question: does the adaptive reflection condition produce stronger within-session state recovery than fixed, random, or baseline conditions, after controlling for time-on-task and novelty?</p>
+
+    <table class="spec-table">
+      <tr><th>Condition</th><th>What it tests</th></tr>
+      <tr><td>A · Baseline</td><td><strong>Silence or ambient sound.</strong> Establishes the natural recovery trajectory and controls for regression to the mean.</td></tr>
+      <tr><td>B · Fixed scaffold</td><td><strong>Single, non-adaptive AI prompt structure.</strong> Tests whether reflective prompting alone — independent of adaptivity — produces state change relative to baseline.</td></tr>
+      <tr><td>C · Random scaffold</td><td><strong>Randomized prompt structures, not contingent on self-report.</strong> Controls for novelty, prompt variety, and expectation.</td></tr>
+      <tr><td>D · Adaptive scaffold</td><td><strong>Prompt structure adapts to self-report and behavioral signals in real-time.</strong> The core hypothesis condition.</td></tr>
+    </table>
+
+    <p>The pilot uses a within-subject crossover design with counterbalanced ordering. The minimum credible signal is a directional convergence of self-report state recovery and behavioral attention recovery in Condition D that is not present in A, B, or C.</p>
+
+    <div class="pull">
+      The contribution is not that adaptivity works. It is that we can <em>tell</em> whether adaptivity works, in a context where randomization to a six-month intervention is impossible.
+      <cite>Methodological framing</cite>
+    </div>
+  </div>
+</section>
+
+<section id="ai-workflow">
+  <div class="section-head">
+    <div class="section-num">06 · AI Workflow</div>
+    <h2 class="section-title">A role-differentiated, documented AI workflow.</h2>
+  </div>
+  <div class="section-body">
+    <p>Three AI systems are used in differentiated roles throughout the research process. The workflow is documented as a research artifact, not concealed.</p>
+
+    <table class="spec-table">
+      <tr><th>Role</th><th>System · Function</th></tr>
+      <tr><td>Structure</td><td><strong>GPT.</strong> System architecture, research logic, prototype scaffolding, executable code. Used to build the structural body of the prototype.</td></tr>
+      <tr><td>Expansion</td><td><strong>Gemini.</strong> Adversarial stress-testing, claim audit, pitch development. Used to surface vulnerabilities before external review.</td></tr>
+      <tr><td>Mirror</td><td><strong>Claude.</strong> Language precision, ethical framing, phenomenological articulation. Used to reflect structural unfolding without independently generating content.</td></tr>
+    </table>
+
+    <p><strong>Authorship.</strong> Wei Jueran is the sole originator of the theoretical framework, research questions, intervention design, and final decisions. The AI workflow operates as a structured thinking tool, analogous to working with role-differentiated collaborators, and is fully documented within the system. The workflow does not replace original thinking; it structures and stress-tests it.</p>
+  </div>
+</section>
+
+<section id="publications">
+  <div class="section-head">
+    <div class="section-num">07 · Output</div>
+    <h2 class="section-title">Three target venues for the work.</h2>
+  </div>
+  <div class="section-body">
+    <p>The research program is structured to support three publication targets, organized from conceptual contribution to empirical contribution to methodological contribution to the learning analytics community.</p>
+
+    <table class="spec-table">
+      <tr><th>Type</th><th>Venue · Contribution</th></tr>
+      <tr><td>Theory / Empirical</td><td><strong>Journal of the Learning Sciences.</strong> The conceptual contribution: reflective interaction as a temporal pathway in adult self-directed learning, framed within design-based research.</td></tr>
+      <tr><td>Empirical</td><td><strong>Computers &amp; Education.</strong> The pilot empirical result: four-condition within-session state recovery study, with convergence between self-report and behavioral measures.</td></tr>
+      <tr><td>Methods</td><td><strong>Learning Analytics &amp; Knowledge (LAK).</strong> The data-structure and learning-analytics contribution: a session-level CSV schema and pipeline for AI-scaffolded reflection studies, generalizable beyond this prototype.</td></tr>
+    </table>
+
+    <p>Each output stands alone; the three together describe a connected research program.</p>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="section-head">
+    <div class="section-num">08 · Timeline</div>
+    <h2 class="section-title">From feasibility pilot to formal study.</h2>
+  </div>
+  <div class="section-body">
+    <p>The project has a defined progression. Each phase has a concrete deliverable and an explicit boundary.</p>
+
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-when">May–June 2026</div>
+        <div class="timeline-what">Informal N=5 self/friend feasibility pilot<small>Protocol calibration. No publishable data. Refines CSV schema and AI scaffolding prompts. Currently in progress.</small></div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-when">Summer 2026</div>
+        <div class="timeline-what">IRB protocol drafting + faculty sponsor confirmation<small>Penn GSE Social/Behavioral IRB. Faculty sponsor identified. Consent forms drafted.</small></div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-when">Fall 2026</div>
+        <div class="timeline-what">IRB submission<small>Submitted to UPenn Social/Behavioral IRB. Recruitment plan finalized. Non-clinical adult population.</small></div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-when">Winter 2026 / 2027</div>
+        <div class="timeline-what">Formal pilot data collection<small>Post-IRB approval. Four-condition within-subject design. Target N=24–36.</small></div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-when">2027</div>
+        <div class="timeline-what">Phase 2 expansion, contingent on collaboration<small>Optional convergence with physiological measures (HRV via consumer wearable). Methodology paper drafted in parallel with empirical paper.</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-head">
+    <div class="section-num">09 · About</div>
+    <h2 class="section-title">Researcher and context.</h2>
+  </div>
+  <div class="section-body">
+    <p>This project is part of a broader cross-disciplinary research program at Penn GSE bridging Learning Sciences, HCI, and AI interaction. The Reflective Rhythm site documents the learning-sciences-facing slice. The fuller product design case study, including system architecture and prototype stack, is available at <a class="inline" href="https://mellowwei.github.io/BCI-HRP/">mellowwei.github.io/BCI-HRP</a>.</p>
+
+    <div class="about-card">
+      <h4>Wei Jueran (Mellow Wei)</h4>
+      <div class="role">MSEd · Learning Sciences and Technology · Penn GSE</div>
+      <p>Researcher in Learning Sciences and Technology at the University of Pennsylvania Graduate School of Education. Working at the intersection of design-based research, AI-scaffolded interaction, and adult learning.</p>
+      <div class="contact">
+        Email · <a href="mailto:[your-upenn-email]">[your-upenn-email]</a><br/>
+        Portal · <a href="https://mellowwei.github.io/MellowWei/">mellowwei.github.io/MellowWei</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h5>Project</h5>
+      <p>Reflective Rhythm</p>
+      <p>A design-based research study</p>
+      <p>at Penn GSE · 2026</p>
+    </div>
+    <div>
+      <h5>Researcher</h5>
+      <p>Wei Jueran (Mellow Wei)</p>
+      <p>MSEd · Learning Sciences and Technology</p>
+      <p>University of Pennsylvania</p>
+    </div>
+    <div>
+      <h5>Related</h5>
+      <a href="https://mellowwei.github.io/BCI-HRP/">Product design case study →</a>
+      <a href="https://mellowwei.github.io/MellowWei/">Researcher portal →</a>
+    </div>
+  </div>
+  <div class="signature">
+    <div>LSR · REFLECTIVE RHYTHM · 2026</div>
+    <div>PENN GSE · LEARNING SCIENCES AND TECHNOLOGY</div>
+  </div>
+</footer>
+
+</body>
+</html>
